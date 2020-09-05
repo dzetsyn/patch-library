@@ -12,7 +12,13 @@
 					"name": "/books",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "http://localhost:3000/books",
 							"protocol": "http",
@@ -31,13 +37,19 @@
 					"name": "/books",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
 									"key": "name",
-									"value": "Book name 3",
+									"value": "Book name 4",
 									"type": "text"
 								},
 								{
@@ -71,7 +83,13 @@
 					"name": "/books/:id",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "http://localhost:3000/books/5f53eee9000e8315ecc277dd",
 							"protocol": "http",
@@ -701,7 +719,7 @@
 							"urlencoded": [
 								{
 									"key": "bookId",
-									"value": "5f53faad08f65f189b553988",
+									"value": "5f541ea916cfc12c508004a9",
 									"type": "text"
 								}
 							]
@@ -737,13 +755,13 @@
 							"urlencoded": [
 								{
 									"key": "bookId",
-									"value": "5f53faad08f65f189b553988",
+									"value": "5f5405ea7a6d531be18ba45c",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://localhost:3000/library/checkout",
+							"raw": "http://localhost:3000/library/return",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -751,7 +769,7 @@
 							"port": "3000",
 							"path": [
 								"library",
-								"checkout"
+								"return"
 							]
 						}
 					},

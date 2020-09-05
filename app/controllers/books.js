@@ -35,11 +35,7 @@ exports.getAllItems = async (req, res) => {
 exports.createItem = async (req, res) => {
   try {
     req = matchedData(req)
-    console.log(req)
-    //const doesCityExists = await cityExists(req.name)
-    //if (!doesCityExists) {
     res.status(201).json(await db.createItem(req, model))
-    //}
   } catch (error) {
     utils.handleError(res, error)
   }

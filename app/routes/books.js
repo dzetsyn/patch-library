@@ -9,7 +9,11 @@ const requireAuth = passport.authenticate('jwt', { session: false })
 const trimRequest = require('trim-request')
 
 
-router.get('/', controller.getAllItems)
+router.get(
+  '/',
+  requireAuth,
+  controller.getAllItems
+)
 
 router.post(
   '/',

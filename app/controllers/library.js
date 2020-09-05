@@ -19,9 +19,15 @@ const allOverdueBooks = async () => {
   return overdueItems;
 }
 
-const bookAvailable = async (bookId) => {
+const availableToCheckout = async (bookId) => {
   const book = await db.getItem(bookId, model);
   if (book && book.returnBy === null && book.takenBy === null) return true;
+  return false;
+}
+
+const availableToReturn = async (userId, bookId) => {
+  const books = await db.getItems({ query: {} }, model, { _id: bookId, takenBy: userId });
+  if (books.totalDocs === 1) return true;
   return false;
 }
 
@@ -33,15 +39,15 @@ exports.checkoutBook = async (req, res) => {
 
     // check overdue items
     const amountOverdueBooks = await overdueBooks(userId);
-    if (amountOverdueBooks > 0) return res.send("overdue!");
+    if (amountOverdueBooks > 0) return utils.handleError(res, utils.buildErrObject(500, 'OVERDUE_BOOKS_EXIST'))
 
     // check the amount of taken books
     const amountTakenBooks = await takenBooks(userId);
-    if (amountTakenBooks >= 3) return res.send('too much taken');
+    if (amountTakenBooks >= 3) return utils.handleError(res, utils.buildErrObject(500, 'TOO_MANY_BOOKS_TAKEN'))
 
-    // book availability to check out
-    const available = await bookAvailable(bookId);
-    if (!available) return res.send('not available');
+    // check if book available to checkout
+    const available = await availableToCheckout(bookId);
+    if (!available) return utils.handleError(res, utils.buildErrObject(500, 'BOOK_NOT_AVAILABLE'))
 
     const now = new Date();
     const returnBy = new Date(now.setDate(now.getDate() + 14)); // now() + 14 days
@@ -57,13 +63,12 @@ exports.returnBook = async (req, res) => {
     const userId = await utils.isIDGood(req.user._id);
     req = matchedData(req);
     const { bookId } = req;
-    const amountTakenBooks = await takenBooks(userId);
-    console.log(amountTakenBooks)
-    if (amountTakenBooks > 3) {
-      utils.handleError(res, utils.buildErrObject(422, 'error.message'))
-    } else
-      //res.send(amountTakenBooks);
-      res.status(201).json(await db.updateItem(bookId, model, { takenBy: null, returnBy: null }))
+
+    // check if book available to return
+    const available = await availableToReturn(userId, bookId);
+    if (!available) return utils.handleError(res, utils.buildErrObject(500, 'BOOK_NOT_AVAILABLE'))
+
+    res.status(201).json(await db.updateItem(bookId, model, { takenBy: null, returnBy: null }))
   } catch (error) {
     utils.handleError(res, error)
   }
