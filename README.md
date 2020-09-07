@@ -1,7 +1,7 @@
 ## Patch Library API
 
 ### Description
-This app was created based on a regular router-model-controller pattern. For the user's authorization, we used JWT. There are two user roles: `admin` and `user`.
+This app was created based on a regular Model-Routes-Controllers-Services pattern. For the user's authorization, we used JWT. There are two user roles: `admin` and `user`.
 
 ### How to run?
 
