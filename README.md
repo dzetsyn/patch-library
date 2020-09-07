@@ -20,3 +20,16 @@ This app was created based on a regular router-model-controller pattern. For the
 ### API Documentation
 You can find all API requests in the Postman Collection file in the root folder: `patch-library.postman_collection.json`
 
+### Example Test Flow
+1. Login using librarian credentials through Auth/login
+`POST: http://localhost:3000/login`
+2. Create new book using API: Books/books
+`POST: http://localhost:3000/books`
+3. Get a list of all available books on library and make sure your new book has successfully created:
+`GET: http://localhost:3000/books`
+4. Checkout a newly created book using API: Library/checkout
+`POST: http://localhost:3000/library/checkout`
+5. Return that book using API: Library/return
+`POST: http://localhost:3000/library/return`
+6. Get a list of all overdue books using API: Library/overdueBooks
+`GET: http://localhost:3000/library/overdueBooks`
